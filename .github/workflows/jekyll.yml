@@ -1,6 +1,3 @@
-Here is the complete workflow file you requested:
-
-```yaml
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -53,8 +50,11 @@ jobs:
           JEKYLL_ENV: production
       - name: Preprocess Jekyll Template
         run: |
+          echo "Finding and replacing date placeholders in Jekyll templates..."
           find ./vendor/bundle/ruby/3.0.0/gems/jekyll-3.9.0/lib/site_template/_posts/ -name "*.markdown.erb" \
+          -exec echo "Processing file: {}" \; \
           -exec sed -i "s/<%= Time.now.strftime('%Y-%m-%d %H:%M:%S %z') %>/$(date '+%Y-%m-%d %H:%M:%S %z')/g" {} +
+        shell: bash
           
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
@@ -71,4 +71,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-```
